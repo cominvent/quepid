@@ -4,6 +4,7 @@
 angular.module('QuepidApp')
   .controller('queriesCtrl', [
     '$scope',
+    '$rootScope',
     '$log',
     '$location',
     '$routeParams',
@@ -16,6 +17,7 @@ angular.module('QuepidApp')
     'customScorerSvc',
     function (
       $scope,
+      $rootScope,
       $log,
       $location,
       $routeParams,
@@ -86,6 +88,7 @@ angular.module('QuepidApp')
 
       $scope.pickCaseScorer           = pickCaseScorer;
       $scope.sortBy                   = sortBy;
+      $scope.toggleShowOnlyRated      = toggleShowOnlyRated;
 
       $scope.getScorer                = getScorer;
 
@@ -354,6 +357,25 @@ angular.module('QuepidApp')
           $scope.reverse = false;
         }
         $location.search('reverse', $scope.reverse);
+      }
+
+      function toggleShowOnlyRated() {
+        var sor = $rootScope.showOnlyRated;
+        console.log('Toggle button pressed, sor= ' + sor);
+        if (sor === undefined) {
+          sor = false;
+        }
+        if (sor === 'false') {
+          sor = 'true';
+        } else {
+          sor = 'false';
+        }
+        $rootScope.showOnlyRated = sor.toString();
+        console.log('showOnlyRated is now toggled to ' + sor);
+        $scope.queries.showOnlyRated = sor.toString();
+        $location.search('showOnlyRated', sor.toString());
+        console.log('Reloading page for sor');
+        location.reload();
       }
     }
   ]);
